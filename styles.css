@@ -1,0 +1,399 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --p:   #6d28d9;
+  --pd:  #4c1d95;
+  --pl:  #ede9fe;
+  --pm:  #7c3aed;
+  --hbg: #f5f3ff;
+  --hbd: #c4b5fd;
+  --cbr: #d1d5db;
+  --sel: #7c3aed;
+}
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  background: #fff;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Formula bar ── */
+#fbar {
+  background: #fff;
+  border-bottom: 1px solid var(--hbd);
+  display: flex;
+  align-items: center;
+  padding: 3px 8px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#cellRef {
+  width: 62px;
+  border: 1px solid var(--hbd);
+  padding: 2px 5px;
+  font-size: 12px;
+  font-family: 'Inter', Arial, sans-serif;
+  text-align: center;
+  background: var(--hbg);
+  border-radius: 2px;
+  outline: none;
+  color: var(--pd);
+  font-weight: 600;
+}
+
+#fbar .sep {
+  width: 1px;
+  height: 18px;
+  background: var(--hbd);
+}
+
+#fInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  font-family: 'Inter', Arial, sans-serif;
+  padding: 2px 4px;
+  color: #1e1b4b;
+}
+
+/* ── Action bar ── */
+#abar {
+  background: var(--hbg);
+  border-bottom: 1px solid var(--hbd);
+  padding: 3px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.abtn {
+  padding: 3px 8px;
+  font-size: 12px;
+  border: 1px solid var(--hbd);
+  background: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #3b1f6e;
+  height: 26px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.abtn:hover:not(:disabled) {
+  background: var(--pl);
+  border-color: var(--pm);
+}
+
+.abtn:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.abtn svg {
+  flex-shrink: 0;
+}
+
+.sep2 {
+  width: 1px;
+  height: 20px;
+  background: var(--hbd);
+}
+
+#selInfo {
+  font-size: 11px;
+  color: #6d28d9;
+  margin-left: 4px;
+}
+
+/* ── Border dropdown ── */
+#bdrWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+#bdrMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 2px;
+  background: #fff;
+  border: 1px solid var(--hbd);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, .15);
+  z-index: 200;
+  display: none;
+  min-width: 190px;
+  overflow: hidden;
+}
+
+#bdrMenu.open {
+  display: block;
+}
+
+.bdr-item {
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e1b4b;
+}
+
+.bdr-item:hover {
+  background: var(--pl);
+}
+
+.bdr-item svg {
+  flex-shrink: 0;
+  color: var(--p);
+}
+
+.bdr-sep {
+  height: 1px;
+  background: var(--hbd);
+  margin: 2px 0;
+}
+
+.bdr-item.danger {
+  color: #b91c1c;
+}
+
+.bdr-item.danger:hover {
+  background: #fef2f2;
+}
+
+/* ── Sheet wrapper ── */
+#sw {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  background: #f8f8fc;
+}
+
+#zoomWrap {
+  transform-origin: top left;
+  display: inline-block;
+  min-width: 100%;
+}
+
+/* ── Table ── */
+#grid {
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+}
+
+.corner {
+  background: var(--hbg);
+  border: 1px solid var(--hbd);
+  min-width: 46px;
+  width: 46px;
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 4;
+}
+
+.col-hdr {
+  background: var(--hbg);
+  border: 1px solid var(--hbd);
+  text-align: center;
+  font-weight: 700;
+  color: var(--pd);
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0;
+  font-size: 12px;
+}
+
+.col-hdr.shdr {
+  background: var(--pl);
+  color: var(--pm);
+}
+
+.col-hdr-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  position: relative;
+}
+
+.col-hdr-text {
+  flex: 1;
+  text-align: center;
+}
+
+.rz {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 5;
+}
+
+.rz:hover,
+.rz.dg {
+  background: var(--pm);
+}
+
+.row-hdr {
+  background: var(--hbg);
+  border: 1px solid var(--hbd);
+  text-align: center;
+  font-weight: 600;
+  color: var(--pd);
+  user-select: none;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 46px;
+  min-width: 46px;
+  font-size: 12px;
+}
+
+.row-hdr.shdr {
+  background: var(--pl);
+  color: var(--pm);
+}
+
+td.cell {
+  border: 1px solid var(--cbr);
+  padding: 0;
+  height: 24px;
+  min-width: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+td.cell.sel {
+  outline: 2px solid var(--sel);
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+td.cell.inr {
+  background: #f3eeff;
+}
+
+td.cell.sel.inr {
+  background: #f3eeff;
+}
+
+td.cell input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0 4px;
+  font-size: 12px;
+  font-family: 'Inter', Arial, sans-serif;
+  background: transparent;
+  cursor: default;
+  caret-color: transparent;
+  color: #1e1b4b;
+}
+
+td.cell input.ed {
+  cursor: text;
+  caret-color: #1e1b4b;
+  background: #fff;
+}
+
+td.merged-hidden {
+  display: none;
+}
+
+.add-col-btn,
+.add-row-btn {
+  background: var(--hbg);
+  border: 1px solid var(--hbd);
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--p);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background .15s;
+  font-weight: 700;
+}
+
+.add-col-btn {
+  min-width: 26px;
+  width: 26px;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.add-row-btn {
+  height: 24px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.add-col-btn:hover,
+.add-row-btn:hover {
+  background: var(--pl);
+  color: var(--pm);
+}
+
+/* ── Context menu ── */
+#ctxMenu {
+  position: fixed;
+  background: #fff;
+  border: 1px solid var(--hbd);
+  box-shadow: 0 4px 16px rgba(109, 40, 217, .18);
+  z-index: 999;
+  min-width: 170px;
+  display: none;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ctx-i {
+  padding: 7px 14px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #1e1b4b;
+}
+
+.ctx-i:hover {
+  background: var(--pl);
+}
+
+.ctx-s {
+  height: 1px;
+  background: var(--hbd);
+  margin: 2px 0;
+}
+
+.ctx-i.d {
+  color: #b91c1c;
+}
+
+.ctx-i.d:hover {
+  background: #fef2f2;
+}

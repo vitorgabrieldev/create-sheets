@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Planilha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="fbar">
+    <input id="cellRef" readonly value="" placeholder="—">
+    <div class="sep"></div>
+    <input id="fInput" placeholder="Valor" readonly>
+  </div>
+
+  <div id="abar">
+    <button class="abtn" id="btnMerge" disabled title="Mesclar / Desmesclar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="1" y="2" width="5" height="12" rx="1"/>
+        <rect x="10" y="2" width="5" height="12" rx="1"/>
+        <path d="M6 8h4M8 6l2 2-2 2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Mesclar
+    </button>
+
+    <div class="sep2"></div>
+
+    <div id="bdrWrap">
+      <button class="abtn" id="btnBdr" disabled title="Bordas" onclick="toggleBdrMenu()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="2" width="12" height="12" rx="1"/>
+          <line x1="8" y1="2" x2="8" y2="14"/>
+          <line x1="2" y1="8" x2="14" y2="8"/>
+        </svg>
+        Bordas ▾
+      </button>
+      <div id="bdrMenu">
+        <div class="bdr-item" onclick="applyBorder('outside'); closeBdrMenu()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="12" height="12" rx="1"/>
+          </svg>
+          Borda ao redor
+        </div>
+        <div class="bdr-item" onclick="applyBorder('all'); closeBdrMenu()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="12" height="12" rx="1"/>
+            <line x1="8" y1="2" x2="8" y2="14"/>
+            <line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+          Todas as bordas
+        </div>
+        <div class="bdr-sep"></div>
+        <div class="bdr-item danger" onclick="applyBorder('none'); closeBdrMenu()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2">
+            <rect x="2" y="2" width="12" height="12" rx="1"/>
+          </svg>
+          Remover bordas
+        </div>
+      </div>
+    </div>
+
+    <span id="selInfo"></span>
+  </div>
+
+  <div id="sw">
+    <div id="zoomWrap">
+      <table id="grid"></table>
+    </div>
+  </div>
+
+  <div id="ctxMenu">
+    <div class="ctx-i" data-a="ira">Inserir linha acima</div>
+    <div class="ctx-i" data-a="irb">Inserir linha abaixo</div>
+    <div class="ctx-s"></div>
+    <div class="ctx-i" data-a="icl">Inserir coluna à esquerda</div>
+    <div class="ctx-i" data-a="icr">Inserir coluna à direita</div>
+    <div class="ctx-s"></div>
+    <div class="ctx-i d" data-a="dr">Excluir linha</div>
+    <div class="ctx-i d" data-a="dc">Excluir coluna</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
