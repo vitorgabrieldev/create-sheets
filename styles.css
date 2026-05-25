@@ -360,6 +360,125 @@ td.merged-hidden {
   color: var(--pm);
 }
 
+/* ── Finance header row ── */
+td.cell.fin-hdr {
+  background: var(--pd) !important;
+}
+td.cell.fin-hdr input {
+  color: #fff !important;
+  font-weight: 700;
+  background: transparent !important;
+  cursor: default;
+}
+
+td.cell.fin-receita input { color: #15803d; font-weight: 500; }
+td.cell.fin-despesa input { color: #b91c1c; font-weight: 500; }
+
+/* ── Summary panel ── */
+#summaryPanel {
+  display: none;
+  background: var(--hbg);
+  border-bottom: 1px solid var(--hbd);
+  padding: 10px 12px;
+  gap: 16px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sum-cards {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.sum-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  min-width: 130px;
+  border: 1px solid transparent;
+}
+
+.sum-card.sum-green  { background: #f0fdf4; border-color: #86efac; }
+.sum-card.sum-red    { background: #fef2f2; border-color: #fca5a5; }
+.sum-card.sum-purple { background: var(--pl); border-color: var(--hbd); }
+
+.sum-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #6b7280;
+}
+
+.sum-green  .sum-label { color: #16a34a; }
+.sum-red    .sum-label { color: #dc2626; }
+.sum-purple .sum-label { color: var(--p); }
+
+.sum-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e1b4b;
+}
+
+.sum-green  .sum-val { color: #15803d; }
+.sum-red    .sum-val { color: #b91c1c; }
+
+.sum-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.sum-cats-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #6b7280;
+  margin-bottom: 2px;
+}
+
+#catList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff;
+  border: 1px solid var(--hbd);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.cat-name   { color: #374151; font-weight: 500; }
+.cat-despesa { color: #b91c1c; font-weight: 600; }
+
+.sum-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #9ca3af;
+  line-height: 1;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.sum-close:hover { background: var(--pl); color: var(--pd); }
+
 /* ── Context menu ── */
 #ctxMenu {
   position: fixed;

@@ -62,7 +62,39 @@
       </div>
     </div>
 
+    <div class="sep2"></div>
+
+    <button class="abtn" id="btnFinance" onclick="loadFinanceTemplate()" title="Template Financeiro">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="2" y="2" width="12" height="12" rx="1.5"/>
+        <path d="M8 5v6M5.5 7.5C5.5 6.67 6.17 6 7 6h1.5a1.5 1.5 0 0 1 0 3H7a1.5 1.5 0 0 0 0 3H8.5" stroke-linecap="round"/>
+      </svg>
+      Financeiro
+    </button>
+
     <span id="selInfo"></span>
+  </div>
+
+  <div id="summaryPanel">
+    <div class="sum-cards">
+      <div class="sum-card sum-green">
+        <span class="sum-label">Receitas</span>
+        <span class="sum-val" id="sumReceitas">R$ 0,00</span>
+      </div>
+      <div class="sum-card sum-red">
+        <span class="sum-label">Despesas</span>
+        <span class="sum-val" id="sumDespesas">R$ 0,00</span>
+      </div>
+      <div class="sum-card sum-purple">
+        <span class="sum-label">Saldo</span>
+        <span class="sum-val" id="sumSaldo">R$ 0,00</span>
+      </div>
+    </div>
+    <div class="sum-cats">
+      <span class="sum-cats-title">Por categoria</span>
+      <div id="catList"></div>
+    </div>
+    <button class="sum-close" onclick="closeSummary()">×</button>
   </div>
 
   <div id="sw">

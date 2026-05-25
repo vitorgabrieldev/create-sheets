@@ -1,5 +1,6 @@
 // ── STATE ──
 let numRows = 100, numCols = 26;
+let financeMode = false;
 const data = {}, merges = {}, mergedInto = {}, colWidths = [];
 const cellBorders = {};
 
@@ -150,6 +151,7 @@ function buildGrid() {
       }
 
       applyBorderStyle(td, r, c);
+      if (financeMode && r === 0) td.classList.add('fin-hdr');
 
       const inp = document.createElement('input');
       inp.type  = 'text';
@@ -246,6 +248,7 @@ function attachCellEvents() {
     data[k] = e.target.value;
     const inp = getInp(selCell.r, selCell.c);
     if (inp) inp.value = e.target.value;
+    if (financeMode) { updateFinanceColors(); updateSummary(); }
   });
 }
 
@@ -278,6 +281,7 @@ function stopEdit(save) {
   }
   document.getElementById('fInput').readOnly = true;
   updateUI();
+  if (financeMode) { updateFinanceColors(); updateSummary(); }
 }
 
 function movesel(dr, dc) {
@@ -536,6 +540,107 @@ ctxMenu.addEventListener('click', e => {
   })[item.dataset.a]?.();
   ctxMenu.style.display = 'none';
 });
+
+// ── FINANCE TEMPLATE ──
+const FIN_COLS = [
+  { label: 'Data',        width: 100 },
+  { label: 'Descrição',   width: 220 },
+  { label: 'Categoria',   width: 140 },
+  { label: 'Tipo',        width: 100 },
+  { label: 'Valor (R$)',  width: 120 },
+  { label: 'Observação',  width: 200 },
+];
+
+const FIN_EXAMPLES = [
+  ['01/05/2025', 'Salário',       'Salário',      'Receita', '4000,00', ''],
+  ['05/05/2025', 'Aluguel',       'Moradia',      'Despesa', '1500,00', ''],
+  ['08/05/2025', 'Supermercado',  'Alimentação',  'Despesa', '380,00',  ''],
+  ['10/05/2025', 'Conta de luz',  'Contas',       'Despesa', '120,00',  ''],
+  ['15/05/2025', 'Freelance',     'Extra',        'Receita', '800,00',  ''],
+  ['18/05/2025', 'Farmácia',      'Saúde',        'Despesa', '95,00',   ''],
+  ['20/05/2025', 'Transporte',    'Transporte',   'Despesa', '180,00',  ''],
+  ['22/05/2025', 'Streaming',     'Lazer',        'Despesa', '55,90',   ''],
+];
+
+function loadFinanceTemplate() {
+  if (!confirm('Carregar template financeiro? Os dados atuais serão substituídos.')) return;
+
+  Object.keys(data).forEach(k => delete data[k]);
+  Object.keys(merges).forEach(k => delete merges[k]);
+  Object.keys(mergedInto).forEach(k => delete mergedInto[k]);
+  Object.keys(cellBorders).forEach(k => delete cellBorders[k]);
+
+  FIN_COLS.forEach((col, c) => { data[K(0, c)] = col.label; colWidths[c] = col.width; });
+
+  FIN_EXAMPLES.forEach((row, r) => {
+    row.forEach((val, c) => { data[K(r + 1, c)] = val; });
+  });
+
+  financeMode = true;
+  selCell = null; rangeStart = null; rangeEnd = null;
+  buildGrid();
+  document.getElementById('summaryPanel').style.display = 'flex';
+  updateFinanceColors();
+  updateSummary();
+}
+
+function closeSummary() {
+  document.getElementById('summaryPanel').style.display = 'none';
+  financeMode = false;
+}
+
+function updateFinanceColors() {
+  for (let r = 1; r < numRows; r++) {
+    const tipo = (data[K(r, 3)] || '').toLowerCase().trim();
+    const valTd = getCell(r, 4);
+    if (!valTd) continue;
+    valTd.classList.remove('fin-receita', 'fin-despesa');
+    if (tipo === 'receita') valTd.classList.add('fin-receita');
+    else if (tipo === 'despesa') valTd.classList.add('fin-despesa');
+  }
+}
+
+function updateSummary() {
+  let receitas = 0, despesas = 0;
+  const cats = {};
+
+  for (let r = 1; r < numRows; r++) {
+    const tipo = (data[K(r, 3)] || '').toLowerCase().trim();
+    if (tipo !== 'receita' && tipo !== 'despesa') continue;
+
+    const raw = (data[K(r, 4)] || '').toString()
+      .replace(/R\$\s?/g, '').replace(/\./g, '').replace(',', '.').trim();
+    const val = parseFloat(raw);
+    if (isNaN(val) || val === 0) continue;
+
+    const cat = (data[K(r, 2)] || 'Outros').trim() || 'Outros';
+    if (!cats[cat]) cats[cat] = { r: 0, d: 0 };
+
+    if (tipo === 'receita') { receitas += val; cats[cat].r += val; }
+    else                    { despesas += val; cats[cat].d += val; }
+  }
+
+  const saldo = receitas - despesas;
+  const fmt = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  document.getElementById('sumReceitas').textContent = fmt(receitas);
+  document.getElementById('sumDespesas').textContent = fmt(despesas);
+
+  const sumSaldo = document.getElementById('sumSaldo');
+  sumSaldo.textContent = fmt(saldo);
+  sumSaldo.style.color = saldo >= 0 ? '#15803d' : '#b91c1c';
+
+  const catList = document.getElementById('catList');
+  catList.innerHTML = '';
+  Object.entries(cats)
+    .sort((a, b) => b[1].d - a[1].d)
+    .forEach(([cat, vals]) => {
+      const el = document.createElement('div');
+      el.className = 'cat-row';
+      el.innerHTML = `<span class="cat-name">${cat}</span><span class="cat-despesa">${fmt(vals.d)}</span>`;
+      catList.appendChild(el);
+    });
+}
 
 // ── INIT ──
 function init() {
